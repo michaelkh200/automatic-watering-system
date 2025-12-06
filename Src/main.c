@@ -1,21 +1,17 @@
 #include "moisture_sensor.h"
 #include <stdint.h>
 #include <stdio.h>
+#include "stm32f407Discovery_Drivers.h"
+#include "led_display.h"
 
-//
-// Needed just to print for the console used more for debugging.
-//
-#define GPIOB_BASE_ADD  (0x40020400)
-#define GPIOB_PORT_OUT_DATA_REG (GPIOB_BASE_ADD + 0x14)
-uint32_t *pGPIOBPortOutReg = (uint32_t*) GPIOB_PORT_OUT_DATA_REG;
-//
-//
-//
 
-//ADC & Pump initialization
+
+//ADC, Pump, I2C , SSD1306 initialization
 void system_init(void){
 	    moisture_sensor_init();
 	    pump_and_led_init();
+	    init_i2c1();
+	    ssd1306_init();
 }
 
 //Delay 1 second (approximately)
@@ -46,24 +42,20 @@ int main(void){
 	//Turn Pump OFF
 	if(moisture_status == 0){
 		pump_on_off(moisture_status);
-
 		// Console prints
 		printf("off\n");
-		printf("RegOutBData : %08lX\n", *pGPIOBPortOutReg);
-
 	}
+
 	//Turn Pump ON
 	else if(moisture_status == 1){
 		pump_on_off(moisture_status);
-
 		//Console prints
 		printf("On\n");
-		printf("RegOutBData : %08lX\n", *pGPIOBPortOutReg);
-
-
 	}
-
-	// 1 Second Delay (Approximately)
+		//clear the previous content on the led and print the new one
+	    ssd1306_clear();
+	    print_LED(moisture_percentage);
+	// 1 second delay
 	delay();
 	}
 
