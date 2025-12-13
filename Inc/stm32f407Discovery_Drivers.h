@@ -10,7 +10,18 @@
 //I2C
 #define I2C1_BASE_ADD (0x40005400u)
 ////ADC's
-#define ADC1_BASE_ADD   (0x40012000)           //ADC1 Base Address
+#define ADC1_BASE_ADD (0x40012000)           //ADC1 Base Address
+
+//NVIC
+#define NVICRBB_BASE_ADD (0xE000E100u)
+#define NVIC_ISER0   (*(volatile uint32_t*)(NVICRBB_BASE_ADD + 0x00))
+
+//FLASH
+#define FLASH_BASE_ADD   (0x40023C00u)
+
+//TIM
+#define TIM2_BASE_ADD (0x40000000u)
+
 
 //SSD1306 Led Display Address
 #define SSD1306_ADDR  (0x3Cu)
@@ -112,6 +123,41 @@ typedef struct {
 
 }GPIOx_regDef_t;
 
+typedef struct
+{
+    volatile uint32_t CR1;
+    volatile uint32_t CR2;
+    volatile uint32_t SMCR;
+    volatile uint32_t DIER;
+    volatile uint32_t SR;
+    volatile uint32_t EGR;
+    volatile uint32_t CCMR1;
+    volatile uint32_t CCMR2;
+    volatile uint32_t CCER;
+    volatile uint32_t CNT;
+    volatile uint32_t PSC;
+    volatile uint32_t ARR;
+    volatile uint32_t RESERVED0;
+    volatile uint32_t CCR1;
+    volatile uint32_t CCR2;
+    volatile uint32_t CCR3;
+    volatile uint32_t CCR4;
+    volatile uint32_t RESERVED1;
+    volatile uint32_t DCR;
+    volatile uint32_t DMAR;
+} TIMx_regDef_t;
+
+typedef struct
+{
+    volatile uint32_t ACR;      // 0x00: Access control register
+    volatile uint32_t KEYR;     // 0x04: Key register
+    volatile uint32_t OPTKEYR;  // 0x08: Option key register
+    volatile uint32_t SR;       // 0x0C: Status register
+    volatile uint32_t CR;       // 0x10: Control register
+    volatile uint32_t OPTCR;    // 0x14: Option control register
+} FLASH_regDef_t;
+
+
 // Peripheral register definitions
 #define RCC ((RCC_regDef_t*)RCC_BASE_ADD)
 #define GPIOA ((GPIOx_regDef_t*)GPIOA_BASE_ADD)
@@ -119,6 +165,8 @@ typedef struct {
 #define GPIOD ((GPIOx_regDef_t*)GPIOD_BASE_ADD)
 #define ADC1 ((ADC_regDef_t*)ADC1_BASE_ADD)
 #define I2C1 ((I2C_regDef_t*)I2C1_BASE_ADD)
+#define FLASH ((FLASH_regDef_t*)FLASH_BASE_ADD)
+#define TIM2 ((TIMx_regDef_t*)TIM2_BASE_ADD)
 
 
 #endif

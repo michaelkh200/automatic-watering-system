@@ -1,25 +1,32 @@
-#include "moisture_sensor.h"
 #include <stdint.h>
 #include <stdio.h>
 #include "stm32f407Discovery_Drivers.h"
+#include "clock.h"
 #include "led_display.h"
-
+#include "moisture_sensor.h"
+#include "tim2.h"
 
 
 //ADC, Pump, I2C , SSD1306 initialization
 void system_init(void){
+		clock_init();
 	    moisture_sensor_init();
 	    pump_and_led_init();
 	    init_i2c1();
 	    ssd1306_init();
+	    tim2_init_1Hz();
 }
+
+//volatile uint8_t g_tim2_1Hz_flag;
 
 //Delay 1 second (approximately)
 void delay(void){
-	for (volatile uint32_t i = 0 ; i < 3000000; i++){
-
-	}
+    while (!g_tim2_1Hz_flag);
+    g_tim2_1Hz_flag = 0;
 }
+
+
+
 
 
 int main(void){
